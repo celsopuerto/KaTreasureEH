@@ -31,11 +31,40 @@ def home(request):
     full_name = None
 
     if idToken:
-        full_name = get_user_info(idToken)
-        if full_name:
+        info = get_user_info(idToken)
+        if info:
             authenticated = True
+            full_name = info['full_name']
 
-    return render(request, 'home.html', {'full_name': full_name, 'authenticated': authenticated})
+    return render(request, 'core/home.html', {'full_name': full_name, 'authenticated': authenticated})
+
+def contactus(request):
+
+    idToken = request.session.get('uid')
+    authenticated = False
+    full_name = None
+    email = None
+
+    if idToken:
+        info = get_user_info(idToken)
+        if info:
+            authenticated = True
+            full_name = info['full_name']
+            email = info['email']
+
+    if request.method == "POST":
+        full_name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        data = {"full_name": full_name, "email": email, "message": message}
+
+        db.child('contact-us').child(subject).child("details").set(data)
+
+        messages.success(request, f"Thank you {full_name}, we will contact you as soon.")
+
+    return render(request, 'core/contactus.html', {'full_name': full_name, 'email': email, 'authenticated': authenticated})
 
 def get_user_info(id_token):
     if id_token:
@@ -45,7 +74,8 @@ def get_user_info(id_token):
         a = a['localId']
 
         full_name = db.child("users").child(a).child('details').child('full_name').get().val()
-        return full_name
+        email = db.child("users").child(a).child('details').child('email').get().val()
+        return {"full_name": full_name, "email":  email}
     else:
         return None
 

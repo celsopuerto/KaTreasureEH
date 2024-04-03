@@ -24,7 +24,7 @@
                 <li><a href="{% url 'KaTreasureApp:home' %}">Home</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="#">Services</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="{% url 'KaTreasureApp:contactus' %}">Contact</a></li>
             </ul>
             <ul class="auth">
                 {% if authenticated == True %}
@@ -44,7 +44,7 @@
             <li><a href="{% url 'KaTreasureApp:home' %}">Home</a></li>
             <li><a href="#">About</a></li>
             <li><a href="#">Services</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="{% url 'KaTreasureApp:contactus' %}">Contact</a></li>
             {% if authenticated == True %}
             <li><a href="{% url 'KaTreasureApp:login' %}" class="action_btn">Logout</a></li>
             <style>

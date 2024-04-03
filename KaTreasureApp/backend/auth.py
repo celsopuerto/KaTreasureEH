@@ -25,7 +25,7 @@ def login(request):
             messages.success(request, "Account Login Successfully")
             authenticated = True
             print("Login Success")
-            return render(request, 'home.html', {'authenticated': authenticated, 'full_name': user_data})
+            return render(request, 'core/home.html', {'authenticated': authenticated, 'full_name': user_data})
         except Exception as e:
             error_message = str(e)
             if 'INVALID_EMAIL' in error_message:
