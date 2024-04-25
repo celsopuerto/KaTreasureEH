@@ -1,0 +1,5 @@
+Log book
+Employee Salary
+Cafe management sales and inventory
+Personel Payroll
+Data Analytics
