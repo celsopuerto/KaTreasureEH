@@ -12,8 +12,6 @@ from firebase_admin import auth
 firebase = pyrebase.initialize_app(config)
 db = firebase.database()
 authn = firebase.auth()
-usermain = db.child("users").get().val()
-print("Signed in: ", usermain)
 
 #admin firebase
 cred = credentials.Certificate('firebase-sdk.json')
@@ -22,24 +20,32 @@ firebase_admin.initialize_app(cred)
 # Create your views here.
 @login_required
 def base(request):
-   
+    uid = request.session.get('uid')
+    if uid:
+        usermain = db.child("users").child(uid).get().val()
+        print("Signed in: ", usermain)
+        print("CELSGOD")
     return render(request, 'base/base.html')
 
 def home(request):
-    idToken = request.session.get('uid')
     authenticated = False
     full_name = None
-
-    if idToken:
-        info = get_user_info(idToken)
-        if info:
-            authenticated = True
-            full_name = info['full_name']
+    try:
+        idToken = request.session.get('uid')
+        if idToken:
+            info = get_user_info(idToken)
+            if info:
+                authenticated = True
+                full_name = info['full_name']
+    except Exception as e:
+        error = str(e)
+        if 'INVALID_ID_TOKEN' in error:
+            messages.success(request, 'Your Token has expired. Please login again')
+            return render(request, 'core/home.html')
 
     return render(request, 'core/home.html', {'full_name': full_name, 'authenticated': authenticated})
 
 def contactus(request):
-
     idToken = request.session.get('uid')
     authenticated = False
     full_name = None
@@ -88,7 +94,7 @@ def forgot_password(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         link = auth.generate_password_reset_link(email, action_code_settings=None)
-        sender = 'isoygwapo84@gmail.com'
+        sender = 'katreasureeh@gmail.com'
         subject = "KaTreasure: Password Reset"
 
         message = f'You requested to reset your password for your KaTreasure account. Use the link below to change it. \n\nReset Link: {link}'

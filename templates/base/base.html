@@ -46,13 +46,18 @@
             <li><a href="#">Services</a></li>
             <li><a href="{% url 'KaTreasureApp:contactus' %}">Contact</a></li>
             {% if authenticated == True %}
-            <li><a href="{% url 'KaTreasureApp:login' %}" class="action_btn">Logout</a></li>
+            <li><a href="{% url 'KaTreasureApp:logout' %}" class="action_btn">Logout</a></li>
             <style>
-            .dropdown_menu.open {
-                height: 287px;
-            }
+                .dropdown_menu.open {
+                    height: 287px;
+                }
             </style>
             {% else %}
+            <style>
+                .dropdown_menu.open {
+                    height: 350px;
+                }
+            </style>
             <li><a href="{% url 'KaTreasureApp:login' %}" class="action_btn">Login</a></li>
             <li><a href="{% url 'KaTreasureApp:signup' %}" class="action_btn">Signup</a></li>
             {% endif %}

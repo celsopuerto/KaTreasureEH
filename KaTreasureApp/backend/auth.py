@@ -3,6 +3,9 @@ from django.contrib import messages
 from ..firebase_config import config
 import pyrebase
 import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import auth
+from django.core.mail import send_mail
 
 
 firebase = pyrebase.initialize_app(config)
@@ -13,12 +16,11 @@ def login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-
         try:
             user = authn.sign_in_with_email_and_password(email, password)
             session_id = user['idToken']
             request.session['uid'] = str(session_id)
-            
+
             uid = str(user['localId'])
             user_data = db.child("users").child(uid).child('details').child('full_name').get().val()
             print("Userdata:", user_data)
@@ -49,6 +51,17 @@ def signup(request):
 
         try:
             user = authn.create_user_with_email_and_password(email, password)
+            
+            link = auth.generate_email_verification_link(email)
+            sender = 'katreasureeh@gmail.com'
+            subject = "KaTreasure: Verification Link"
+            message = f'We requested to verify your email for your KaTreasure account. Use the link below to verify it. \n\nReset Link: {link}'
+
+            recipient_list = [email]
+
+            send_mail(subject, message, sender, recipient_list)
+            messages.success(request, f'Verification link has been sent to {email}')
+
             data = {"full_name": full_name, "email": email, "status":"1"}
 
             uid = user['localId']

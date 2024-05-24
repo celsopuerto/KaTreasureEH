@@ -21,8 +21,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'isoygwapo84@gmail.com'
-EMAIL_HOST_PASSWORD = 'juwulvlwjgkphfkk'
+EMAIL_HOST_USER = 'katreasureeh@gmail.com'
+EMAIL_HOST_PASSWORD = 'ehuzuaqcnikcgpff'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False   
@@ -31,9 +31,9 @@ EMAIL_USE_SSL = False
 SECRET_KEY = 'django-insecure---@$00!4s^(8-yn-4_^8)1liqgw6pphuk(n=c%ni_(-w$p+q^3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False #TRUE IN DEFAULT
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app','now.sh','127.0.0.1','localhost']
 
 
 # Application definition
@@ -84,10 +84,22 @@ WSGI_APPLICATION = 'KaTreasure.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'NKUcgaWZdQttuElAMhtiPJfcTJTZhcWo',
+        'HOST': 'viaduct.proxy.rlwy.net',
+        'PORT': '21654',
     }
 }
+
+#--------BACKUP--
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
 
 
 # Password validation
@@ -125,7 +137,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
+STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'public', 'static')
 MEDIA_URL='/media/'

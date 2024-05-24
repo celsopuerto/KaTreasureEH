@@ -1,5 +1,5 @@
-Log book
-Employee Salary
+Logbook - Search
+Employee Salary - 
 Cafe management sales and inventory
 Personel Payroll
 Data Analytics
